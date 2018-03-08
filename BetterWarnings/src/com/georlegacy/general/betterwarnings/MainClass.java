@@ -13,9 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -31,6 +29,7 @@ import static com.georlegacy.general.betterwarnings.VarClass.msgPrefix;
 import com.georlegacy.general.betterwarnings.commands.*;
 
 public class MainClass extends JavaPlugin{
+	
 	@Override
 	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
@@ -38,15 +37,16 @@ public class MainClass extends JavaPlugin{
 		registerConfig();
 		metricsLog();
 		
+		//Registering all commands to classes
 		getCommand("warn").setExecutor(new WarningCommand(this));
 		getCommand("warnings").setExecutor(new CountWarningCommand(this));
 		getCommand("listwarnings").setExecutor(new ListWarningCommand(this));
 		getCommand("clearwarnings").setExecutor(new ClearWarningsCommand(this));
 		getCommand("clearwarning").setExecutor(new ClearSingleWarningCommand(this));
-		getCommand("betterwarnings").setExecutor(new HelpCommand());
+		getCommand("betterwarnings").setExecutor(new HelpCommand(new VarClass(this)));
 	}
 	
-	//metrics logging
+	//Plugin Metrics data collection and logging (called in onEnable)
 	public void metricsLog() {
 	    try {
 	        Metrics metrics = new Metrics(this);
@@ -57,7 +57,18 @@ public class MainClass extends JavaPlugin{
 	    }
 	}
 	
-	//config registering
+	//Method to log player's UUID on their first join, called in JoinListener()
+		public void logUUID(Player player) {
+			String path = "uuids." + player.getName();
+			if (!(this.getConfig().contains(path))) {
+				getLogger().info("INFO: " + player.getName() + " is joining for first time! Logging UUID to config file!");
+				getConfig().set("uuids." + player.getName(), player.getUniqueId().toString());
+				saveConfig();
+			}
+		}
+		
+	
+	//Registering config, mainly for first time to create section for UUID storage
 	private void registerConfig() {
 		getConfig().options().copyDefaults();
 		if (!(getConfig().isConfigurationSection("uuids"))) {
@@ -78,7 +89,8 @@ public class MainClass extends JavaPlugin{
 		saveConfig();
 	}
 	
-	//method for clearing single warning from player warnings file
+	//Method called in ClearSingleWarningCommand() for online player
+	//Clears a single warning using an index number, shown in getTextFromFile() method
 	public void clearSingleWarning(CommandSender sender, Player player, int index, boolean isSilent) throws Exception {
 		try {
 			String filename = player.getUniqueId().toString() + ".yml";
@@ -113,6 +125,7 @@ public class MainClass extends JavaPlugin{
 						fw.close();	
 						String[] warningSplit = warning.split(": ");
 						sender.sendMessage(msgPrefix + ChatColor.YELLOW + "The warning " + ChatColor.GOLD + warningSplit[1].toString().replace(" ", "") + ChatColor.YELLOW + " has been removed from " + ChatColor.GOLD + player.getName() + ChatColor.YELLOW + ".");
+						//Checking for isSilent boolean parameter
 						if (isSilent==false) {
 							player.sendMessage(msgPrefix + ChatColor.YELLOW + "The warning " + ChatColor.GOLD + warningSplit[1].toString().replace(" ", "") + ChatColor.YELLOW + " has been removed from your record by " + ChatColor.GOLD + sender.getName() + ".");
 							sender.sendMessage(msgPrefix + ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " has been sent a notification regarding the removal of their warning.");
@@ -132,25 +145,10 @@ public class MainClass extends JavaPlugin{
 		}
 	}
 	
-	//method to log player uuid to config file
-	public void logUUID(Player player) {
-		String path = "uuids." + player.getName();
-		if (!(this.getConfig().contains(path))) {
-			getLogger().info("INFO: " + player.getName() + " is joining for first time! Logging UUID to config file!");
-			getConfig().set("uuids." + player.getName(), player.getUniqueId().toString());
-			saveConfig();
-		}
-	}
-	
-	//method to log warning to file
+	//Method for logging a new warning to a player's YML file, named after their UUID
 	public void logToFile (String message, String playerToBeWarned) {
         try
         {
-            File dataFolder = getDataFolder();
-            if(!dataFolder.exists())
-            {
-                dataFolder.mkdir();
-            }
             Player player = Bukkit.getPlayer(playerToBeWarned);
             UUID puuid = player.getUniqueId();
             File saveTo = new File(getDataFolder(), puuid + ".yml");
@@ -169,7 +167,7 @@ public class MainClass extends JavaPlugin{
         }
     }
 	
-	//offline method to log warning to file
+	//Offline version of method above (logging player's new warning to file)
 	public void offlineLogToFile (String message, String puuid) {
         try
         {
@@ -194,7 +192,7 @@ public class MainClass extends JavaPlugin{
         }
     }
 	
-	//method to count lines (warnings) in a players .yml file
+	//Method to count lines (warnings) in a players .yml file
 	public int countLines(String playerName) throws IOException {
 		Player player = Bukkit.getPlayer(playerName);
 		UUID puuid = player.getUniqueId();
@@ -213,7 +211,7 @@ public class MainClass extends JavaPlugin{
 		return lines;
 	}
 	
-	//offline method to count lines (warnings) in a players .yml file
+	//Offline method to count lines (warnings) in a players .yml file
 	public int offlineCountLines(String playerUUID) throws IOException {
 		File file = new File(getDataFolder(), playerUUID + ".yml"); 
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -227,7 +225,7 @@ public class MainClass extends JavaPlugin{
 		return lines;
 	}
 	
-	//method to read players warnings file
+	//Method to list a player's warnings on record (in .yml file)
 	public List<String> getTextFromFile(String playerFileName, CommandSender warner) {
 		Player player = Bukkit.getPlayer(playerFileName);
 		UUID puuid = player.getUniqueId();
@@ -254,7 +252,7 @@ public class MainClass extends JavaPlugin{
         return text;
     }
 	
-	//offline reading method
+	//Offline method to list a player's warnings on record (in .yml file)
 	public List<String> offlineGetTextFromFile(String playerUUID, CommandSender warner) {
 		File file = new File(getDataFolder(), playerUUID + ".yml");
         if (!file.exists()) {
@@ -278,13 +276,4 @@ public class MainClass extends JavaPlugin{
         }
         return text;
     }
-	
-	//method to gain time for logging warning
-	public String getTime() {
-	    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-	    Date now = new Date();
-	    String strDate = sdfDate.format(now);
-	    return strDate;
-	}
-
 }

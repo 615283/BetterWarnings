@@ -17,8 +17,10 @@ import org.bukkit.entity.Player;
 
 import com.georlegacy.general.betterwarnings.MainClass;
 
+//Command Class for ClearSingleWarning command (/clearwarning)
 public class ClearSingleWarningCommand implements CommandExecutor {
 	
+	//Constructor for accessing methods in MainClass()
 	private static MainClass plugin;
 
 	public ClearSingleWarningCommand(MainClass plugin) {
@@ -27,16 +29,21 @@ public class ClearSingleWarningCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender warner, Command cmd, String label, String[] args) {
+		//Checking if CommandSender has permission
 		if (warner.hasPermission("betterwarnings.clearwarn")) {
+			//Checking that the CommandSender has provided enough args
 			if (args.length >= 2) {
 				Player target = Bukkit.getPlayer(args[0]);
 				boolean isSilent;
+				//Checking args[1] (Second argument) is a number
 				if (args[1].matches("\\d+")) {
 					int index = Integer.parseInt(args[1]);
 					if (target != null) {
+						//Seeing if there is a third argument then checking if it matches the parameter -s
 						if (args.length >= 3) {
 							if (args[2].equalsIgnoreCase("-s")) {
 								try {
+									//Defining isSilent boolean for calling the method
 									isSilent=true;
 									plugin.clearSingleWarning(warner, target, index, isSilent);
 									return true;
@@ -46,6 +53,7 @@ public class ClearSingleWarningCommand implements CommandExecutor {
 							}
 							else {
 								try {
+									//Defining isSilent boolean for calling the method
 									isSilent=false;
 									plugin.clearSingleWarning(warner, target, index, isSilent);
 									return true;
@@ -56,6 +64,7 @@ public class ClearSingleWarningCommand implements CommandExecutor {
 						}
 						else {
 							try {
+								//Defining isSilent boolean for calling the method
 								isSilent=false;
 								plugin.clearSingleWarning(warner, target, index, isSilent);
 								return true;
@@ -66,11 +75,13 @@ public class ClearSingleWarningCommand implements CommandExecutor {
 					}
 				}
 			}
+				//If args[1] is not a number
 				else {
 					warner.sendMessage(msgPrefix + args[1] + ChatColor.RED + "is not a valid number.");
 					return true;
 				}
 		}
+		//If CommandSender does not have permission to run the command
 		else {
 			warner.sendMessage(msgPrefix + ChatColor.RED + "You do not have the permission to use this command!");
 			return true;

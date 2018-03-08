@@ -6,10 +6,30 @@
 
 package com.georlegacy.general.betterwarnings;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.bukkit.ChatColor;
 
 public class VarClass {
 	
-	public static final String msgPrefix = ChatColor.translateAlternateColorCodes('&', "&8[&7BetterWarnings&8] ");
+	//Constructor for accessing methods in MainClass() and defining variable plVersion
+		private static MainClass plugin;
+		public String plVersion;
 
+		public VarClass(MainClass plugin) {
+		    VarClass.plugin = plugin;
+		    plVersion = plugin.getDescription().getVersion();
+		}
+	
+	//Method to get time as format shown below for TimeStamp in warnings
+	public static String getTime() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		Date now = new Date();
+		String strDate = sdfDate.format(now);
+	    return strDate;
+	}
+	
+	//Message prefix used in most messages send to a CommandSender
+	public static final String msgPrefix = ChatColor.translateAlternateColorCodes('&', "&8[&7BetterWarnings&8] ");
 }

@@ -10,7 +10,7 @@
 name: BetterWarnings
 main: com.georlegacy.general.betterwarnings.MainClass
 author: 615283
-version: 2.1.6
+version: 2.1.7
 description: Allows staff to warn players.
 commands:
     warn:

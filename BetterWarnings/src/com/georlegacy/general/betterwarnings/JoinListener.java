@@ -13,13 +13,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 	
+	//Constructors for access to logUUID() method from MainClass()
+	private MainClass mainClass;
+	
 	public JoinListener(MainClass plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		mainClass = plugin;
 	}
-    
-	MainClass mainClass;
 	
+	//Listens for a player joining the server
 	@EventHandler
 	public void playerJoinEvent(PlayerJoinEvent e) {
 		Player player = e.getPlayer();

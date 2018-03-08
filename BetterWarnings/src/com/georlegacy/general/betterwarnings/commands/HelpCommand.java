@@ -6,28 +6,35 @@
 
 package com.georlegacy.general.betterwarnings.commands;
 
+import com.georlegacy.general.betterwarnings.VarClass;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
+//Class for /betterwarnings (AKA help/info command)
 public class HelpCommand implements CommandExecutor {
 
+	//Constructor to provide access to non-static variables in VarClass()
+	private VarClass vc;
+
+	public HelpCommand(VarClass vc) {
+		this.vc = vc;
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (sender instanceof Player) {
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-"));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7&lBetterWarnings &8&lV2.1.6 &7&lby &8&l615283 &7&l615283.net"));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/warn <playername> <warning> &8- &7Assigns a warning to a player"));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/warnings <playername> &8- &7Counts the warnings of a player"));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/listwarnings <playername> &8- &7Lists the warnings of a player"));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/clearwarnings <playername> &8- &7Clears &lALL &7warnings currently assigned to a player"));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/clearwarning <playername> <warningnumber> [-s] &8- &7Clears a single warning of a player, add -s to suppress notification to player"));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-"));
-			return true;
-		}
-		return false;
+		//Sending help and info to CommandSender
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-"));
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&lBetterWarnings &7&lon &8&lV") + vc.plVersion + ChatColor.translateAlternateColorCodes('&', " &7&lby &8&l615283 &7&l615283.net"));
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/warn <playername> <warning> &8- &7Assigns a warning to a player"));
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/warnings <playername> &8- &7Counts the warnings of a player"));
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/listwarnings <playername> &8- &7Lists the warnings of a player"));
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/clearwarnings <playername> &8- &7Clears &lALL &7warnings currently assigned to a player"));
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7/clearwarning <playername> <warningnumber> [-s] &8- &7Clears a single warning of a player, add -s to suppress notification to player"));
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-&0-&f-"));
+		return true;
 	}
 
 }
