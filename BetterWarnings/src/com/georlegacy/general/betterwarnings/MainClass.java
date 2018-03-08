@@ -39,7 +39,7 @@ public class MainClass extends JavaPlugin{
 		metricsLog();
 		
 		getCommand("warn").setExecutor(new WarningCommand(this));
-		getCommand("warning").setExecutor(new CountWarningCommand(this));
+		getCommand("warnings").setExecutor(new CountWarningCommand(this));
 		getCommand("listwarnings").setExecutor(new ListWarningCommand(this));
 		getCommand("clearwarnings").setExecutor(new ClearWarningsCommand(this));
 		getCommand("clearwarning").setExecutor(new ClearSingleWarningCommand(this));
