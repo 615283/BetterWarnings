@@ -1,0 +1,54 @@
+#COPYRIGHT JAMES CONWAY (615283) (C) 2018
+#DO NOT DISTRIBUTE
+name: BetterWarnings
+main: com.georlegacy.general.betterwarnings.MainClass
+author: 615283
+version: 2.1.2
+description: Allows staff to warn players.
+commands:
+    warn:
+        description: Assigns a warning to a player
+        usage: /<command> <playername> <warning>
+        aliases: warnplayer
+    warnings:
+        description: Counts the warnings of a player
+        usage: /<command> <playername>
+        aliases: [countwarnings, warns]
+    listwarnings:
+        description: Lists the warnings of a player
+        usage: /<command> <playername>
+        aliases: listwarns
+    clearwarnings:
+        description: Clears all warnings currently assigned to a player
+        usage: /<command> <playername>
+        aliases: clearwarns
+    clearwarning:
+        description: Clears a single warning of a player, add -s to suppress notification to player
+        usage: /<command> <playername> <warningnumber> [-s]
+        aliases: clearwarn
+permissions:
+    betterwarnings.*:
+        description: Gives access to all commands from the BetterWarnings plugin
+        children:
+            betterwarnings.warn: true
+            betterwarnings.viewwarns: true
+            betterwarnings.clearwarns: true
+            betterwarnings.clearwarn: true
+        default: op
+    betterwarnings.warn:
+        description: Allows a player to assign warnings to other players
+        default: false
+    betterwarnings.viewwarns: 
+        description: Allows a player to view warnings currently assigned to a player
+        default: false
+    betterwarnings.clearwarns:
+        description: Allows a player to clear ALL warnings of another player
+        default: false
+        children:
+            betterwarnings.viewwarns: true
+            betterwarnings.clearwarn: true
+    betterwarnings.clearwarn:
+        description: Allows a single warning at a time from a player
+        default: false
+        children:
+            betterwarnings.viewwarns: true
