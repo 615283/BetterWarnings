@@ -1,9 +1,16 @@
-#COPYRIGHT JAMES CONWAY (615283) (C) 2018
-#DO NOT DISTRIBUTE
+#
+#
+#COPYRIGHT JAMES CONWAY (615283) 2018 (C)
+#This code is mine and is not to be used for any personal or other gain.
+#If you wish to fork off of this GitHub page, feel free but you MUST keep my Copyright notices and name in the code where it is now.
+#If you compile this code, even if you have edited it, do not share it with others on Bukkit and Spigot, keep it to GitHub.
+#
+#
+
 name: BetterWarnings
 main: com.georlegacy.general.betterwarnings.MainClass
 author: 615283
-version: 2.1.2
+version: 2.1.6
 description: Allows staff to warn players.
 commands:
     warn:
@@ -26,6 +33,10 @@ commands:
         description: Clears a single warning of a player, add -s to suppress notification to player
         usage: /<command> <playername> <warningnumber> [-s]
         aliases: clearwarn
+    betterwarnings:
+        description: Plugin info & help
+        usage: /<command>
+        aliases: [bw, bwarn, bwarnings]
 permissions:
     betterwarnings.*:
         description: Gives access to all commands from the BetterWarnings plugin

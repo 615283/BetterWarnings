@@ -43,6 +43,7 @@ public class MainClass extends JavaPlugin{
 		getCommand("listwarnings").setExecutor(new ListWarningCommand(this));
 		getCommand("clearwarnings").setExecutor(new ClearWarningsCommand(this));
 		getCommand("clearwarning").setExecutor(new ClearSingleWarningCommand(this));
+		getCommand("betterwarnings").setExecutor(new HelpCommand());
 	}
 	
 	//metrics logging
